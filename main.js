@@ -15,17 +15,17 @@ const fs = require('fs');
 const http = require('http');
 //const session = require('session').defaultSession;
 // const electronProxyAgent = require('electron-proxy-agent');
-const httpProxy = require('http-proxy');
+// const httpProxy = require('http-proxy');
 
-const proxy = httpProxy.createProxyServer({
-  target:'http://localhost:9000',
-  ssl: {
-    key: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-cert.pem')),
-    ciphers: 'AES128-GCM-SHA256',
-  },
-  //secure: true
-}).listen(8090);
+// const proxy = httpProxy.createProxyServer({
+//   target:'http://localhost:9000',
+//   ssl: {
+//     key: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-key.pem')),
+//     cert: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-cert.pem')),
+//     ciphers: 'AES128-GCM-SHA256',
+//   },
+//   //secure: true
+// }).listen(8090);
 
 // //
 // // Create your target server
@@ -61,7 +61,7 @@ app.on('ready', () => {
   });
 
   // 加载首页
-  win.loadURL('https://rd5.zhaopin.com');
+  win.loadURL('http://exam.net.zhaopin.com');
 
   // 窗口准备好显示
   win.once('ready-to-show', () => {
@@ -96,7 +96,7 @@ app.on('activate', () => {
 
 // 注册请求拦截器
 function requestInterceptor(){
-  win.webContents.session.setProxy({ proxyRules: 'http=http://localhost:8090;https=https://localhost:8090' }, (result) => {
+  win.webContents.session.setProxy({ proxyRules: 'http=http://localhost:9000;https=https://localhost:9001' }, (result) => {
     console.log(result)
   })
   // 拦截http请求

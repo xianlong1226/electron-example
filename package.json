@@ -29,8 +29,10 @@
     "electron-squirrel-startup": "^1.0.0",
     "fstream": "^1.0.11",
     "http-proxy": "^1.16.2",
+    "koa": "^2.5.0",
     "moment": "^2.18.1",
     "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "unzip": "^0.1.11",
     "xlsx-style": "^0.8.13"
   },
