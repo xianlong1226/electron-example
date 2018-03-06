@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+    <title>test</title>
+    <link href="./test.css" type="text/css" rel="stylesheet" />
+		<style>
+			.login-logo {
+				width: 156px;
+				height: 57px;
+				background: url(./zhaopin-logo.png) no-repeat left top;
+				display: block;
+			}
+		</style>
+		<script>
+			function service_worker_register() {
+				if(navigator.serviceWorker != null) {
+					navigator.serviceWorker.register('./service-worker.js')
+						.then(function(r) {
+							console.log('service worker has registered success!');
+						})
+						.catch(function(whut) {
+							console.log('service worker has registered failure!');
+						});
+				}
+			}
+			window.onload = service_worker_register;
+		</script>
+	</head>
+
+	<body>
+		<div>electron example1 c</div>
+		<div class="login-logo"></div>
+		<a href="test2.html">goto test2.html</a>
+    <script src="./test.js"></script>
+	</body>
+
+</html>

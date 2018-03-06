@@ -13,31 +13,6 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
-//const session = require('session').defaultSession;
-// const electronProxyAgent = require('electron-proxy-agent');
-const httpProxy = require('http-proxy');
-
-const proxy = httpProxy.createProxyServer({
-  target:'http://localhost:9000',
-  ssl: {
-    key: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'fixtures', 'agent2-cert.pem')),
-    ciphers: 'AES128-GCM-SHA256',
-  },
-  //secure: true
-}).listen(8090);
-
-// //
-// // Create your target server
-// //
-// http.createServer(function (req, res) {
-//   res.writeHead(200, { 'Content-Type': 'text/plain' });
-//   res.write('request successfully proxied!' + '\n' + JSON.stringify(req.headers, true, 2));
-//   res.end();
-// }).listen(9000);
-
-// 
-// protocol.registerStandardSchemes(['https']);
 
 // 全局的window对象
 let win;
@@ -56,16 +31,17 @@ app.on('ready', () => {
     fullscreen: false,
     show: false,
     webPreferences: {
-      //preload: path.join(__dirname, 'assets/js/base.js') // 页面加载时首先执行这个js
+      preload: path.join(__dirname, 'preload.js') // 页面加载时首先执行这个js
     }
   });
 
   // 加载首页
-  win.loadURL('https://rd5.zhaopin.com');
+  win.loadURL('http://localhost:8001/test.html');
 
   // 窗口准备好显示
   win.once('ready-to-show', () => {
     win.show()
+    win.webContents.openDevTools ()
   })
 
   // 窗口关闭
@@ -96,30 +72,4 @@ app.on('activate', () => {
 
 // 注册请求拦截器
 function requestInterceptor(){
-  win.webContents.session.setProxy({ proxyRules: 'http=http://localhost:8090;https=https://localhost:8090' }, (result) => {
-    console.log(result)
-  })
-  // 拦截http请求
-  //protocol.interceptStringProtocol('https', (request, callback) => {
-    // let data = ''
-    // const request1 = net.request(request.url)
-    // request1.on('login', (authInfo, callback) => {
-    //   callback('username', 'password')
-    // })
-    // request1.on('response', (response) => {
-    //   response.on('data', (chunk) => {
-    //     data += chunk
-    //     console.log(`BODY: ${chunk}`)
-    //   })
-    //   response.on('end', () => {
-    //     console.log('response请求中没有更多数据。')
-    //     return callback(data)
-    //   })
-    // })
-    // request1.on('error', (error) => {
-    //   console.log(error)
-    // })
-    // request1.end();
-    //return callback(fs.readFileSync(path.join(__dirname + '/index.html'), 'utf8'));
-  //});
 }
