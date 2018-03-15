@@ -15,7 +15,7 @@
 		<script>
 			function service_worker_register() {
 				if(navigator.serviceWorker != null) {
-					navigator.serviceWorker.register('./service-worker.js')
+					navigator.serviceWorker.register('./service-worker.js?v=' + (new Date().getTime()))
 						.then(function(r) {
 							console.log('service worker has registered success!');
 						})
@@ -24,7 +24,7 @@
 						});
 				}
 			}
-			window.onload = service_worker_register;
+			window.onload = service_worker_register
 		</script>
 	</head>
 

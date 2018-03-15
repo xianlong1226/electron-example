@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>test</title>
+		<style>
+			.login-logo {
+				width: 156px;
+				height: 57px;
+				background: url(./images/zhaopin-logo.png) no-repeat left top;
+				display: block;
+			}
+		</style>
+		<link href="./css/index.css" type="text/css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div>electron example</div>
+		<div class="login-logo"></div>
+		<div>
+			<button id="btn_ajax">测试ajax请求</button>
+			<div id="ajax_result"></div>
+		</div>
+		<div>
+			<input type="text" id="content_copy" value="我是要复制的内容" />
+			<button id="btn_copy">复制</button>
+			<button id="btn_past">粘贴</button>
+		</div>
+		<script src="self://app/js/jquery.1.9.0.js"></script>
+		<script src="./js/index.js"></script>
+		<script>
+			const {ipcRenderer, clipboard} = require('electron')
+
+			// 通知
+			let myNotification = new Notification('标题', {
+				body: '通知正文内容'
+			})
+			myNotification.onclick = () => {
+				console.log('通知被点击')
+			}
+
+			// 发送网络请求
+			$('#btn_ajax').click(function(){
+				$.ajax({
+					url: 'http://127.0.0.1:8001/getdata',
+					type: 'get',
+					success: function(result) {
+						$('#ajax_result').text(JSON.stringify(result.data))
+					},
+					error: function(error) {
+						$('#ajax_result').text(error.statusText)
+					}
+				})
+			})
+
+			// 禁用某个菜单
+			let menus = [{ id: '1-1', enabled: false }]
+			ipcRenderer.send('setMenuEnable-listen', JSON.stringify(menus))
+			ipcRenderer.on('setMenuEnable-reply', (event, arg) => {
+				console.log(arg)
+			})
+
+			// 监听主进程发出的消息
+			ipcRenderer.on('message', function(event, message){
+				console.log(message)
+			})
+
+			// 剪切板操作
+			$('#btn_copy').click(function(){
+				clipboard.writeText($('#content_copy').val(), 'a')
+			})
+			$('#btn_past').click(function(){
+				alert(clipboard.readText('a'))
+			})
+
+		</script>
+	</body>
+
+</html>

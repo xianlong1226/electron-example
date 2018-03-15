@@ -58,7 +58,8 @@ this.addEventListener('fetch', function(event)  {
   if (url.indexOf('cors=1') !== -1) {
     req = new Request(url, {mode: 'cors'});
   } else {
-    req = event.request.clone();
+    // req = event.request.clone();
+    req = new Request(url, {mode: 'cors'});
   }
 
   event.respondWith(
