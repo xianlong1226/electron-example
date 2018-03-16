@@ -31,6 +31,9 @@
 		<script>
 			const {ipcRenderer, clipboard} = require('electron')
 
+			// 检查更新
+			ipcRenderer.send('check-for-update')
+
 			// 通知
 			let myNotification = new Notification('标题', {
 				body: '通知正文内容'

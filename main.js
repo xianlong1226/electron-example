@@ -11,12 +11,15 @@ const {
   dialog,
   autoUpdater,
   session,
-  globalShortcut
+  globalShortcut,
+  shell
 } = require('electron');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+
+startupEventHandle();
 
 // 全局的window对象
 let win;
@@ -107,7 +110,7 @@ function setMenu() {
       }]
     }, {
       id: '1',
-      label: '数据管理',
+      label: '管理',
       submenu: [{
           id: '1-1',
           label: '导入数据包',
@@ -139,6 +142,29 @@ function setMenu() {
               console.log('导出成功')
               win.webContents.send('message', '导出成功')
             });
+          }
+        },
+        {
+          id: '1-3',
+          label: '打开PPT',
+          click() {
+            var result = shell.openItem(path.join(__dirname, 'electron.pptx'))
+            console.log(path.join(__dirname, 'electron.pptx'))
+            console.log(result)
+          }
+        },
+        {
+          id: '1-4',
+          label: '打开Electron官网',
+          click() {
+            var result = shell.openExternal('https://electronjs.org/')
+          }
+        },
+        {
+          id: '1-5',
+          label: '打开ZhaoCheng的github',
+          click() {
+            var result = shell.openExternal('https://github.com/zcbenz')
           }
         }
       ]
@@ -316,7 +342,6 @@ ipcMain.on('setMenuEnable-listen', (event, arg) => {
  * windows平台下的自动更新 开始
  */
 // window平台下通过electron-squirrel-startup安装程序
-startupEventHandle();
 function startupEventHandle() {
   if (require('electron-squirrel-startup')) return;
   let handleStartupEvent = function () {
@@ -383,7 +408,7 @@ function updateHandle() {
     };
 
     // 设置更新检查的服务器路径
-    autoUpdater.setFeedURL(config.check_update_url);
+    autoUpdater.setFeedURL("http://127.0.0.1:8001/publish");
     // 标记是否更新
     let selectUpdate = true;
 

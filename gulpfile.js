@@ -4,9 +4,9 @@ const fs = require('fs')
 const path = require('path')
 
 // 配置参数
-const winVersion = '1.0.0'
+const winVersion = '1.0.1'
 const macVersion = '1.0.0'
-const appName = 'electron-test'
+const appName = 'electrontest'
 let publishPath = path.join(__dirname, './publish')
 let iconPath = path.join(__dirname, './favicon.ico')
 let iconPath1 = path.join(__dirname, './favicon.ico.icns')
@@ -25,7 +25,7 @@ gulp.task('win-packager', ['clean'], function(callback) {
     dir: './',
     appVersion: winVersion,
     arch: 'ia32',
-    electronVersion: '1.7.9',
+    electronVersion: '1.8.2',
     executableName: appName,
     icon: iconPath,
     name: appName,
@@ -55,7 +55,11 @@ gulp.task('win-installer', ['win-packager'], function(callback) {
     appDirectory: appDirectory,
     outputDirectory: publishPath,
     authors: 'xianlong.zeng',
+    name: appName, // 这个属性最好指定，如果不指定的话那要注意exe这个属性的名字要与package.json中name完全一致，否则会报奇怪的错误，服！
     exe: appName + '.exe',
+    setupExe: appName + '.exe',
+    setupMsi: appName + '.msi',
+    //setupIcon: iconPath,
     version: winVersion,
     loadingGif: './install.gif'
   });
